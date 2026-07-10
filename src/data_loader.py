@@ -24,6 +24,7 @@ def download_prices(
         tickers,
         start=start,
         end=end,
+        interval='1d',
         auto_adjust=True,
         group_by="ticker",
         progress=False,
