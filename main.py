@@ -14,10 +14,9 @@ TICKERS = [
     "2628.HK",  # China Life Insurance
     "0883.HK",  # CNOOC
     "1088.HK",  # China Shenhua Energy
-    "000300.SS", # 沪深300
 ] 
 
-TICKERS_TO_LOOK_INTO = ["0700.HK", "1398.HK"]
+TICKERS_TO_LOOK_INTO = ["0939.HK", "1398.HK"]
 
 
 def main() -> None:
@@ -28,8 +27,8 @@ def main() -> None:
     print(close_prices.tail())
     print("\nDaily returns:")
     print(daily_returns.tail())
+    plot_normalized_prices(close_prices, TICKERS_TO_LOOK_INTO)
     plot_cumulative_returns(daily_returns, TICKERS_TO_LOOK_INTO)
-
 
 if __name__ == "__main__":
     main()
