@@ -1,6 +1,12 @@
 from collections.abc import Sequence
 import pandas as pd
 
+def clean_pair_prices(prices: pd.DataFrame,
+                      tickers: Sequence[str]) -> pd.DataFrame:
+    if len(tickers) != 2:
+        raise ValueError("Not a pair")
+    return prices.loc[:, list(tickers)].dropna(how="any")
+
 def compute_ratios(normalized_prices: pd.DataFrame, 
                    tickers: Sequence[str]) -> pd.Series:
     if len(tickers) != 2:

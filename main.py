@@ -26,8 +26,9 @@ WINDOW = 20
 def main() -> None:
     data = download_prices(TICKERS, start="2026-01-01", end="2026-07-01")
     close_prices = get_close_prices(data)
-    normalized_prices = compute_normalized_prices(close_prices)
-    ratios = compute_ratios(normalized_prices, PAIR)
+    pair_prices = clean_pair_prices(close_prices, PAIR)
+    normalized_pair_prices = compute_normalized_prices(pair_prices)
+    ratios = compute_ratios(normalized_pair_prices, PAIR)
     rolling_means = compute_rolling_means(ratios, WINDOW)
     rolling_std = compute_rolling_std(ratios, WINDOW)
     z_score = compute_z_score(ratios, rolling_means, rolling_std)
