@@ -36,6 +36,15 @@ def get_close_prices(
         closes.columns = ordered_tickers
     return closes.dropna(how="all")
 
+def compute_normalized_prices(close_prices: pd.DataFrame) -> pd.DataFrame:
+    normalized_prices = close_prices / close_prices.iloc[0]
+    return normalized_prices
 
 def compute_daily_returns(close_prices: pd.DataFrame) -> pd.DataFrame:
     return close_prices.pct_change(fill_method=None)
+
+def compute_cumulative_returns(daily_returns: pd.DataFrame) -> pd.DataFrame:
+    cumulative_returns = (1 + daily_returns).cumprod() - 1
+    return cumulative_returns
+
+

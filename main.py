@@ -1,5 +1,9 @@
 from src.data_loader import download_prices
-from src.features import compute_daily_returns, get_close_prices
+from src.features import (
+    compute_normalized_prices,
+    get_close_prices,
+)
+from src.pair_features import *
 from src.plot import *
 
 
@@ -14,21 +18,20 @@ TICKERS = [
     "2628.HK",  # China Life Insurance
     "0883.HK",  # CNOOC
     "1088.HK",  # China Shenhua Energy
-] 
+]
 
-TICKERS_TO_LOOK_INTO = ["0939.HK", "1398.HK"]
-
+PAIR = ["0939.HK", "1398.HK"]
+WINDOW = 20
 
 def main() -> None:
     data = download_prices(TICKERS, start="2026-01-01", end="2026-07-01")
     close_prices = get_close_prices(data)
-    daily_returns = compute_daily_returns(close_prices)
-    print("Close prices:")
-    print(close_prices.tail())
-    print("\nDaily returns:")
-    print(daily_returns.tail())
-    plot_normalized_prices(close_prices, TICKERS_TO_LOOK_INTO)
-    plot_cumulative_returns(daily_returns, TICKERS_TO_LOOK_INTO)
-
+    normalized_prices = compute_normalized_prices(close_prices)
+    ratios = compute_ratios(normalized_prices, PAIR)
+    rolling_means = compute_rolling_means(ratios, WINDOW)
+    rolling_std = compute_rolling_std(ratios, WINDOW)
+    z_score = compute_z_score(ratios, rolling_means, rolling_std)
+    plot_z_scores(z_score)
+    
 if __name__ == "__main__":
     main()

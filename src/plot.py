@@ -3,42 +3,52 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
 import pandas as pd
 
-def plot_returns(daily_returns : pd.DataFrame,
-                 tickers : Sequence[str] | str) -> None:
+def plot_daily_returns(daily_returns: pd.DataFrame,
+                 tickers: Sequence[str] | str) -> None:
     if tickers is None:
         raise ValueError("No ticker selected")
     cleaned_daily_returns = daily_returns[tickers].dropna(how="any")
-    ax = cleaned_daily_returns[tickers].plot(figsize=(12, 6), title="Returns", linewidth=1)
+    ax = cleaned_daily_returns.plot(figsize=(12, 6), title="Returns", linewidth=1)
     ax.set_xlabel("Date")
     ax.set_ylabel("Return")
-    ax.axhline()
+    ax.axhline(0)
     ax.yaxis.set_major_formatter(PercentFormatter(1.0))
     plt.tight_layout()
     plt.show()
 
-def plot_cumulative_returns(daily_returns : pd.DataFrame,
+def plot_cumulative_returns(cumulative_returns : pd.DataFrame,
                             tickers : Sequence[str] | str) -> None:
     if tickers is None:
         raise ValueError("No ticker selected")
-    cleaned_daily_returns = daily_returns[tickers].dropna(how="any")
-    cum_returns = (1 + cleaned_daily_returns).cumprod() - 1
-    ax = cum_returns[tickers].plot(figsize=(12, 6), title="Returns", linewidth=1)
+    cleaned_cumulative_returns = cumulative_returns[tickers].dropna(how="any")
+    ax = cleaned_cumulative_returns.plot(
+        figsize=(12, 6), title="Cumulative Returns", linewidth=1
+    )
     ax.set_xlabel("Date")
     ax.set_ylabel("Return")
-    ax.axhline()
+    ax.axhline(0)
     ax.yaxis.set_major_formatter(PercentFormatter(1.0))
     plt.tight_layout()
     plt.show()
 
-def plot_normalized_prices(closes : pd.DataFrame,
+def plot_normalized_prices(normalized_prices: pd.DataFrame,
                            tickers : Sequence[str] | str | None = None) -> None:
     if tickers is None:
         raise ValueError("No ticker selected")
-    normalized = closes / closes.iloc[0]
-    cleaned_normalized = normalized[tickers].dropna(how="any")
+    cleaned_normalized = normalized_prices[tickers].dropna(how="any")
     ax = cleaned_normalized.plot(figsize=(12, 6), title="Normalized Prices", linewidth=1)
     ax.set_xlabel("Date")
-    ax.set_ylabel("Prices")
-    ax.yaxis.set_major_formatter("${x:,.2f}")
+    ax.set_ylabel("Normalized Price")
+    ax.yaxis.set_major_formatter("{x:,.2f}")
+    plt.tight_layout()
+    plt.show()
+
+def plot_z_scores(z_scores: pd.DataFrame) -> None:
+    cleaned_z_scores = z_scores.dropna(how="any")
+    ax = cleaned_z_scores.plot(figsize=(12, 6), title="Z-Score", linewidth=1)
+    ax.set_xlabel("Date")
+    ax.set_ylabel("z-score")
+    ax.axhline(0)
+    ax.yaxis.set_major_formatter("{x:,.2f}")
     plt.tight_layout()
     plt.show()
