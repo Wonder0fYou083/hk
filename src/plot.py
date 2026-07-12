@@ -7,7 +7,7 @@ def plot_returns(daily_returns : pd.DataFrame,
                  tickers : Sequence[str] | str) -> None:
     if tickers is None:
         raise ValueError("No ticker selected")
-    ax = daily_returns[tickers].plot(figsize=(12, 6), title="Daily Returns", linewidth=1)
+    ax = daily_returns[tickers].plot(figsize=(12, 6), title="Returns", linewidth=1)
     ax.set_xlabel("Date")
     ax.set_ylabel("Return")
     ax.axhline()

@@ -12,11 +12,8 @@ def download_prices(
     start: str = "2018-01-01",
     end: str | None = None,
     save_path: str | Path | None = DEFAULT_PRICE_PATH,
-    use_cache: bool = False,
 ) -> pd.DataFrame:
     path = Path(save_path) if save_path is not None else None
-    if use_cache and path is not None and path.exists():
-        return pd.read_parquet(path)
 
     import yfinance as yf
 
@@ -27,7 +24,7 @@ def download_prices(
         interval='1d',
         auto_adjust=True,
         group_by="ticker",
-        progress=False,
+        progress=True,
         threads=True,
     )
     if data.empty:
